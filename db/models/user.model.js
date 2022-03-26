@@ -2,6 +2,7 @@ const mongoose = require("mongoose")
 const validator = require("validator")
 const bcrypt = require("bcryptjs")
 const jwt = require("jsonwebtoken")
+const upload = require("../../middleware/fileUpload")
 
 
 const userSchema = new mongoose.Schema({
@@ -56,9 +57,9 @@ const userSchema = new mongoose.Schema({
         }
     }],
 
-    image: {
+    profilePic: {
         type: String,
-        trim: true
+        trim: true,
     }
 
 }, 
@@ -95,6 +96,7 @@ userSchema.methods.generateToken = async function(){
     await user.save()
     return token
 }
+
 
 const User = mongoose.model("User", userSchema)
 

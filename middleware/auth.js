@@ -13,7 +13,8 @@ const auth = async(req,res,next)=>{
         }
        )
        if(!user) throw new Error("invalid credintials")
-
+       req.user=user
+       req.token=token
        next()
     }
     

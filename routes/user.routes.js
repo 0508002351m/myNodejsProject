@@ -1,16 +1,20 @@
 const userController = require("../controller/user.controller")
 const { modelName } = require("../db/models/user.model")
+const upload = require("../middleware/fileUpload")
 
 const router = require("express").Router()
 const auth = require("../middleware/auth")
+router.post("/profileImg",auth,upload.single("mohamed"), userController.profileImg)
 router.post("/register", userController.addUser)
-router.get("/login",userController.login)
+router.post("/login",userController.login)
 router.get("/showAll",auth, userController.showAll)
 router.get("/showAll/:id",auth, userController.showSingle)
 router.delete('/showAll/:id',auth, userController.delUser)
 router.patch('/showAll/:id',auth, userController.editUser)
-
-
+router.post("/logout",auth, userController.logout)
+router.post("/logoutAll",auth, userController.logoutAll)
+router.post("/changePass",auth, userController.changePass)
+router.post("/me",auth, userController.profile)
 
 
 module.exports = router 

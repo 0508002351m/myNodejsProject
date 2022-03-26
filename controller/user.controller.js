@@ -1,6 +1,4 @@
-const bcrypt = require("bcryptjs/dist/bcrypt")
 const userModel = require("../db/models/user.model")
-
 class User {
     //Add New Users Function:
     static addUser = async(req, res)=> {
@@ -126,6 +124,97 @@ static login = async(req,res)=>{
         message: "error in logging"
         })
     }
+}
+
+static logout = async(req,res)=>{
+    try{
+        req.user.tokens = req.user.tokens.filter(t=>
+            {return t.token!=req.token}
+            
+        )
+        await req.user.save()
+        res.status(200).send({
+            apiStatus:true,
+            data: "",
+            message: "logged out"
+        })
+    }
+
+    catch(e) {
+        res.status(500).send({
+        apiStatus: false,
+        errors: e.message,
+        message: "Log in first"
+        })
+    }
+
+}
+static logoutAll = async(req,res)=>{
+    try{
+        req.user.tokens = []
+        await req.user.save()
+        res.status(200).send({
+            apiStatus:true,
+            data: "",
+            message: "logged out"
+        })
+    }
+
+    catch(e) {
+        res.status(500).send({
+        apiStatus: false,
+        errors: e.message,
+        message: "Log in first"
+        })
+    }
+
+
+}
+static changePass = async(req,res)=>{
+    try{
+        req.user.password = req.body.password
+        await req.user.save()
+        res.status(200).send({
+            apiStatus:true,
+            data: "",
+            message: "password changed"
+        })
+    }
+
+    catch(e) {
+        res.status(500).send({
+        apiStatus: false,
+        errors: e.message,
+        message: ""
+        })
+    }
+
+
+
+}
+static profile = async(req,res)=>{
+        res.status(200).send({data:req.user,apiStatus:true,message:"profile fetched"})
+}
+
+static profileImg = async(req,res)=>{
+    try{
+        req.user.profilePic = req.file.path
+        await req.user.save()
+        res.status(200).send({
+            apiStatus:true,
+            data: req.file ,
+            message: "Uploaded"
+        })
+    }
+
+    catch(e) {
+        res.status(500).send({
+        apiStatus: false,
+        errors: e.message,
+        message: "Uploading failed"
+        })
+    }
+
 }
 
 }
