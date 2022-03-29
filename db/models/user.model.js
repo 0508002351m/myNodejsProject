@@ -60,8 +60,11 @@ const userSchema = new mongoose.Schema({
     profilePic: {
         type: String,
         trim: true,
-    }
-
+    },
+    role: {
+        type: String,
+        default: "user",
+      },
 }, 
 
     {timestamps: true})
@@ -96,6 +99,9 @@ userSchema.methods.generateToken = async function(){
     await user.save()
     return token
 }
+
+
+
 
 
 const User = mongoose.model("User", userSchema)
